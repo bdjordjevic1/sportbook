@@ -29,7 +29,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping(value = "/api/locations")
-public class LocationsController {
+public class LocationsController extends BaseApiController {
 
     @Resource
     private LocationRepository locationRepository;

@@ -13,16 +13,18 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.service;
+package com.ronin.sportbook.data;
 
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
+import com.ronin.sportbook.model.UserModel;
+import lombok.Getter;
+import lombok.Setter;
 
-@Service(value = "mediaService")
-public class DefaultMediaService implements MediaService {
+import java.io.Serializable;
+import java.util.List;
 
-    @Override
-    public ClassPathResource getImage(String name) {
-        return new ClassPathResource("medias/" + name);
-    }
+@Getter
+@Setter
+public class UserModelList implements Serializable {
+
+    private List<UserModel> users;
 }

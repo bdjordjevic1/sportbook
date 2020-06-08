@@ -13,53 +13,46 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.model;
+package com.ronin.sportbook.media.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ronin.sportbook.media.model.MediaModel;
+import com.ronin.sportbook.model.UserModel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "medias")
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserModel implements Serializable {
+public class MediaModel implements Serializable {
 
     @Id
-    private String email;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "media_generator")
+    @SequenceGenerator(name = "media_generator", sequenceName = "media_seq")
+    private Long id;
 
-    private String password;
+    private String name;
 
-    private String firstName;
+    private String context;
 
-    private String lastName;
+    private String url;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
-    private MediaModel profilePicture;
-
-    @ManyToMany(fetch = FetchType.LAZY,
-                cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-                },
-                mappedBy = "users")
     @JsonIgnore
-    private List<EventModel> events;
+    private String realPath;
 
+    @OneToOne(mappedBy = "profilePicture")
+    @JsonIgnore
+    private UserModel user;
 }

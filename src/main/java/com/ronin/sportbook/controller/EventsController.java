@@ -31,7 +31,7 @@ import javax.annotation.Resource;
 
 @RestController
 @RequestMapping(value = "/api/events")
-public class EventsController {
+public class EventsController extends BaseApiController {
 
     @Resource
     private EventRepository eventRepository;

@@ -15,33 +15,37 @@
 
 package com.ronin.sportbook.controller;
 
+import com.ronin.sportbook.dto.UserDTO;
+import com.ronin.sportbook.dto.UserDTOList;
 import com.ronin.sportbook.model.UserModel;
 import com.ronin.sportbook.repository.UserRepository;
+import com.ronin.sportbook.service.UserService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 import javax.annotation.Resource;
 
 @RestController
 @RequestMapping(value = "/api/users")
-public class UsersController {
+public class UsersController extends BaseApiController {
+
+    @Resource
+    private UserService userService;
 
     @Resource
     private UserRepository userRepository;
 
     @GetMapping
-    public List<UserModel> getAllUsers() {
-        return userRepository.findAll();
+    public UserDTOList getAllUsers() {
+        return getMapper().map(userService.findAll(), UserDTOList.class);
     }
 
     @PostMapping
-    public UserModel createUser(@RequestBody UserModel user) {
-        return userRepository.save(user);
+    public UserDTO createUser(@RequestBody UserModel user) {
+        return getMapper().map(userRepository.save(user), UserDTO.class);
     }
 
 

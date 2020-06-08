@@ -13,11 +13,19 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.service;
+package com.ronin.sportbook.storage.service;
 
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
-public interface MediaService {
+import java.nio.file.Path;
 
-    ClassPathResource getImage(String name);
+public interface StorageService {
+
+    String store(MultipartFile file);
+
+    Path load(String filename, String context);
+
+    Resource loadAsResource(String filename, String context);
+
 }
