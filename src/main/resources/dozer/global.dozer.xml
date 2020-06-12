@@ -3,15 +3,19 @@
           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
           xsi:schemaLocation="http://dozermapper.github.io/schema/bean-mapping http://dozermapper.github.io/schema/bean-mapping.xsd">
     <mapping>
-        <class-a>com.ronin.sportbook.model.UserModel</class-a>
-        <class-b>com.ronin.sportbook.dto.UserDTO</class-b>
+        <class-a>com.ronin.sportbook.user.model.UserModel</class-a>
+        <class-b>com.ronin.sportbook.user.dto.UserDTO</class-b>
     </mapping>
     <mapping>
-        <class-a>com.ronin.sportbook.data.UserModelList</class-a>
-        <class-b>com.ronin.sportbook.dto.UserDTOList</class-b>
+        <class-a>com.ronin.sportbook.user.data.UserModelList</class-a>
+        <class-b>com.ronin.sportbook.user.dto.UserDTOList</class-b>
     </mapping>
     <mapping>
         <class-a>com.ronin.sportbook.media.model.MediaModel</class-a>
         <class-b>com.ronin.sportbook.media.dto.MediaDTO</class-b>
+    </mapping>
+    <mapping>
+        <class-a>com.ronin.sportbook.event.model.EventModel</class-a>
+        <class-b>com.ronin.sportbook.event.dto.EventDTO</class-b>
     </mapping>
 </mappings>

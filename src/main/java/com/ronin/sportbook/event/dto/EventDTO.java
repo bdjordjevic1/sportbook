@@ -13,13 +13,21 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.event.dto;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.ronin.sportbook.user.dto.UserDTOList;
+import lombok.Getter;
+import lombok.Setter;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+import java.io.Serializable;
+import java.util.Date;
 
+@Getter
+@Setter
+public class EventDTO implements Serializable {
+
+    private Long id;
+    private Date time;
+    private String weekDay;
+    private UserDTOList users;
 }

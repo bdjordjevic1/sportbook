@@ -15,14 +15,11 @@
 
 package com.ronin.sportbook.media.controller;
 
-import com.ronin.sportbook.controller.BaseApiController;
-import com.ronin.sportbook.media.model.MediaModel;
+import com.ronin.sportbook.common.controller.BaseApiController;
 import com.ronin.sportbook.media.service.MediaService;
-import com.ronin.sportbook.storage.service.StorageService;
-import com.ronin.sportbook.utility.FileUtils;
-import org.jasypt.util.text.BasicTextEncryptor;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.UrlResource;
+import com.ronin.sportbook.common.storage.service.StorageService;
+import com.ronin.sportbook.common.utility.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StreamUtils;
@@ -44,10 +41,10 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping(value = "/api/medias")
 public class MediasController extends BaseApiController {
 
-    @Resource
+    @Autowired
     private MediaService mediaService;
 
-    @Resource
+    @Autowired
     private StorageService storageService;
 
     @GetMapping(value = "/{name:.+}", produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE})

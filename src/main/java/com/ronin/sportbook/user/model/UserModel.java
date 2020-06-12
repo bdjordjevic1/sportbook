@@ -1,0 +1,125 @@
+/*********************************************************************
+ * The Initial Developer of the content of this file is NETCONOMY.
+ * All portions of the code written by NETCONOMY are property of
+ * NETCONOMY. All Rights Reserved.
+ *
+ * NETCONOMY Software & Consulting GmbH
+ * Hilmgasse 4, A-8010 Graz (Austria)
+ * FN 204360 f, Landesgericht fuer ZRS Graz
+ * Tel: +43 (316) 815 544
+ * Fax: +43 (316) 815544-99
+ * www.netconomy.net
+ *
+ * (c) 2020 by NETCONOMY Software & Consulting GmbH
+ *********************************************************************/
+
+package com.ronin.sportbook.user.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.ronin.sportbook.common.security.authority.Authority;
+import com.ronin.sportbook.common.security.provider.AuthProvider;
+import com.ronin.sportbook.event.model.EventModel;
+import com.ronin.sportbook.media.model.MediaModel;
+import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "users")
+@Getter
+@Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class UserModel implements UserDetails, Serializable {
+
+    @Id
+    private String email;
+
+    @JsonIgnore
+    private String password;
+
+    private String firstName;
+
+    private String lastName;
+
+    @Column(nullable = false)
+    private Boolean emailVerified = false;
+
+    @OneToOne
+    @JoinColumn(name = "media_id", referencedColumnName = "id")
+    private MediaModel profilePicture;
+
+    @ManyToMany(fetch = FetchType.LAZY,
+                cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+                },
+                mappedBy = "users")
+    @JsonIgnore
+    private List<EventModel> events;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authority",
+               joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email"),
+               inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
+    private List<Authority> authorities;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    private AuthProvider authProvider;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    // We can add the below fields in the users table.
+    // For now, they are hardcoded.
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @JsonIgnore
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}

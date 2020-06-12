@@ -13,13 +13,9 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.common.security.authority;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
-
+public enum UserRoleName {
+    ROLE_USER,
+    ROLE_ADMIN
 }

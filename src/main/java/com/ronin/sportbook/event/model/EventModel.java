@@ -13,46 +13,47 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.media.model;
+package com.ronin.sportbook.event.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.ronin.sportbook.user.model.UserModel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
-@Table(name = "medias")
+@Table(name = "events")
 @Getter
 @Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class MediaModel implements Serializable {
+public class EventModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "media_generator")
-    @SequenceGenerator(name = "media_generator", sequenceName = "media_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Temporal(TemporalType.TIME)
+    private Date time;
 
-    private String context;
+    private String weekDay;
 
-    private String url;
-
-    @JsonIgnore
-    private String realPath;
-
-    @OneToOne(mappedBy = "profilePicture")
-    @JsonIgnore
-    private UserModel user;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "events_users",
+               joinColumns = { @JoinColumn(name = "event_id")},
+               inverseJoinColumns = { @JoinColumn(name = "user_id")})
+    private List<UserModel> users = new ArrayList<>();
 }

@@ -13,13 +13,18 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.user.data;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.ronin.sportbook.user.model.UserModel;
+import lombok.Getter;
+import lombok.Setter;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+import java.io.Serializable;
+import java.util.List;
 
+@Getter
+@Setter
+public class UserModelList implements Serializable {
+
+    private List<UserModel> users;
 }

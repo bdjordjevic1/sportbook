@@ -13,13 +13,15 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.media.model;
+package com.ronin.sportbook.location.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ronin.sportbook.user.model.UserModel;
+import com.ronin.sportbook.event.model.EventModel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.io.Serializable;
 
@@ -27,32 +29,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "medias")
+@Table(name = "locations")
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class MediaModel implements Serializable {
+public class LocationModel implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "media_generator")
-    @SequenceGenerator(name = "media_generator", sequenceName = "media_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
-    private String context;
+    private String streetName;
 
-    private String url;
+    private String streetNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "event_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
-    private String realPath;
-
-    @OneToOne(mappedBy = "profilePicture")
-    @JsonIgnore
-    private UserModel user;
+    private EventModel event;
 }

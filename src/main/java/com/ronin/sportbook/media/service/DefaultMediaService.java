@@ -17,8 +17,9 @@ package com.ronin.sportbook.media.service;
 
 import com.ronin.sportbook.media.model.MediaModel;
 import com.ronin.sportbook.media.repository.MediaRepository;
-import com.ronin.sportbook.storage.service.StorageService;
+import com.ronin.sportbook.common.storage.service.StorageService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,10 @@ import javax.annotation.Resource;
 @Service("mediaService")
 public class DefaultMediaService implements MediaService {
 
-    @Resource
+    @Autowired
     private MediaRepository mediaRepository;
 
-    @Resource
+    @Autowired
     private StorageService storageService;
 
     @Override

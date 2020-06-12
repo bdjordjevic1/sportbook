@@ -13,13 +13,18 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.common.utility;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import java.net.FileNameMap;
+import java.net.URLConnection;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+public final class FileUtils {
 
+    private FileUtils() {
+    }
+
+    public static String getMimeType(String fileName) {
+        FileNameMap fileNameMap = URLConnection.getFileNameMap();
+        return fileNameMap.getContentTypeFor(fileName);
+    }
 }

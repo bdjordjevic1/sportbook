@@ -13,13 +13,19 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.common.storage.service;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.core.io.Resource;
+import org.springframework.web.multipart.MultipartFile;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+import java.nio.file.Path;
+
+public interface StorageService {
+
+    String store(MultipartFile file);
+
+    Path load(String filename, String context);
+
+    Resource loadAsResource(String filename, String context);
 
 }

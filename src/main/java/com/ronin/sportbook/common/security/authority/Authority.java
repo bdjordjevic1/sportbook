@@ -13,46 +13,49 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.media.model;
+package com.ronin.sportbook.common.security.authority;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ronin.sportbook.user.model.UserModel;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.Serializable;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "medias")
-@Getter
-@Setter
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class MediaModel implements Serializable {
+@Table(name = "authority")
+public class Authority implements GrantedAuthority {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "media_generator")
-    @SequenceGenerator(name = "media_generator", sequenceName = "media_seq")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private UserRoleName name;
 
-    private String context;
+    @Override
+    public String getAuthority() {
+        return name.name();
+    }
 
-    private String url;
+    public Long getId() {
+        return id;
+    }
 
-    @JsonIgnore
-    private String realPath;
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-    @OneToOne(mappedBy = "profilePicture")
-    @JsonIgnore
-    private UserModel user;
+    public UserRoleName getName() {
+        return name;
+    }
+
+    public void setName(UserRoleName name) {
+        this.name = name;
+    }
 }

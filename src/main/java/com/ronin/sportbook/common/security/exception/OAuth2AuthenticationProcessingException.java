@@ -13,13 +13,17 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.common.security.exception;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.security.core.AuthenticationException;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+public class OAuth2AuthenticationProcessingException extends AuthenticationException {
 
+    public OAuth2AuthenticationProcessingException(String msg, Throwable t) {
+        super(msg, t);
+    }
+
+    public OAuth2AuthenticationProcessingException(String msg) {
+        super(msg);
+    }
 }

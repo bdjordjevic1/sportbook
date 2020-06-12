@@ -13,13 +13,30 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.common.security.provider;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import lombok.Getter;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+import java.util.Map;
+
+public abstract class OAuth2UserInfo {
+
+    protected Map<String, Object> attributes;
+
+    public OAuth2UserInfo(Map<String, Object> attributes) {
+        this.attributes = attributes;
+    }
+
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    public abstract String getId();
+
+    public abstract String getName();
+
+    public abstract String getEmail();
+
+    public abstract String getImageUrl();
 
 }

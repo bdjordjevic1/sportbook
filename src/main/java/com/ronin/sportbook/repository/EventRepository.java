@@ -15,7 +15,7 @@
 
 package com.ronin.sportbook.repository;
 
-import com.ronin.sportbook.model.EventModel;
+import com.ronin.sportbook.event.model.EventModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

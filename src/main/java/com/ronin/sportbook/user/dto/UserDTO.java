@@ -13,13 +13,21 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.user.dto;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.ronin.sportbook.media.dto.MediaDTO;
+import lombok.Getter;
+import lombok.Setter;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+import java.io.Serializable;
 
+@Getter
+@Setter
+public class UserDTO implements Serializable {
+
+    private String email;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private MediaDTO profilePicture;
 }

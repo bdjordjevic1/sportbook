@@ -13,13 +13,13 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.repository;
+package com.ronin.sportbook.user.service;
 
-import com.ronin.sportbook.model.ResponseTypeModel;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
-public interface ResponseTypeRepository extends JpaRepository<ResponseTypeModel, Long> {
+import com.ronin.sportbook.user.data.UserModelList;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
+public interface UserService extends UserDetailsService {
+
+    UserModelList findAll();
 }
