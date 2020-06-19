@@ -15,7 +15,7 @@
 
 package com.ronin.sportbook.common.security.service;
 
-import com.ronin.sportbook.common.security.config.AppProperties;
+import com.ronin.sportbook.common.security.AppProperties;
 import com.ronin.sportbook.user.model.UserModel;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -30,13 +30,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.util.Date;
 
-import javax.annotation.Resource;
-
 @Service
-public class TokenProvider {
-    private static final Logger logger = LoggerFactory.getLogger(TokenProvider.class);
+public class TokenProviderService {
+    private static final Logger logger = LoggerFactory.getLogger(TokenProviderService.class);
 
     @Autowired
     private AppProperties appProperties;
@@ -45,11 +44,11 @@ public class TokenProvider {
         UserModel user = (UserModel) authentication.getPrincipal();
 
         Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + appProperties.getAuth().getTokenExpirationMsec());
+        Date expiryDate = Date.from(now.toInstant().plus(Duration.ofSeconds(appProperties.getAuth().getTokenExpirationSec())));
 
         return Jwts.builder()
                    .setSubject(user.getEmail())
-                   .setIssuedAt(new Date())
+                   .setIssuedAt(now)
                    .setExpiration(expiryDate)
                    .signWith(SignatureAlgorithm.HS512, appProperties.getAuth().getTokenSecret())
                    .compact();

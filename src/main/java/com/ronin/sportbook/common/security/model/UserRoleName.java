@@ -13,7 +13,7 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.common.security.authority;
+package com.ronin.sportbook.common.security.model;
 
 public enum UserRoleName {
     ROLE_USER,

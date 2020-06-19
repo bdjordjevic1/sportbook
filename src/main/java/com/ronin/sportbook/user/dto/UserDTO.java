@@ -26,7 +26,6 @@ import java.io.Serializable;
 public class UserDTO implements Serializable {
 
     private String email;
-    private String password;
     private String firstName;
     private String lastName;
     private MediaDTO profilePicture;

@@ -17,8 +17,8 @@ package com.ronin.sportbook.user.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.ronin.sportbook.common.security.authority.Authority;
-import com.ronin.sportbook.common.security.provider.AuthProvider;
+import com.ronin.sportbook.common.security.model.Authority;
+import com.ronin.sportbook.common.security.model.AuthProvider;
 import com.ronin.sportbook.event.model.EventModel;
 import com.ronin.sportbook.media.model.MediaModel;
 import com.sun.istack.NotNull;
@@ -37,11 +37,14 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -52,6 +55,10 @@ import javax.persistence.Table;
 public class UserModel implements UserDetails, Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_generator")
+    @SequenceGenerator(name = "user_generator", sequenceName = "user_seq")
+    private Long id;
+
     private String email;
 
     @JsonIgnore
@@ -79,7 +86,7 @@ public class UserModel implements UserDetails, Serializable {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
-               joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "email"),
+               joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
 
@@ -116,7 +123,6 @@ public class UserModel implements UserDetails, Serializable {
     public boolean isCredentialsNonExpired() {
         return true;
     }
-
 
     @Override
     public boolean isEnabled() {

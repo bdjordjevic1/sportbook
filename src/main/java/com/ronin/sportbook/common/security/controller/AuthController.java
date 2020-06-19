@@ -1,13 +1,14 @@
 package com.ronin.sportbook.common.security.controller;
 
 
-import com.ronin.sportbook.common.payload.ApiResponse;
-import com.ronin.sportbook.common.payload.AuthResponse;
-import com.ronin.sportbook.common.payload.LoginRequest;
-import com.ronin.sportbook.common.payload.SignUpRequest;
+import com.ronin.sportbook.common.controller.BaseApiController;
+import com.ronin.sportbook.common.security.payload.ApiResponse;
+import com.ronin.sportbook.common.security.payload.AuthResponse;
+import com.ronin.sportbook.common.security.payload.LoginRequest;
+import com.ronin.sportbook.common.security.payload.SignUpRequest;
 import com.ronin.sportbook.common.security.exception.BadRequestException;
-import com.ronin.sportbook.common.security.provider.AuthProvider;
-import com.ronin.sportbook.common.security.service.TokenProvider;
+import com.ronin.sportbook.common.security.model.AuthProvider;
+import com.ronin.sportbook.common.security.service.TokenProviderService;
 import com.ronin.sportbook.repository.UserRepository;
 import com.ronin.sportbook.user.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,8 @@ import java.net.URI;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/auth")
-public class AuthController {
+@RequestMapping("/api/auth")
+public class AuthController extends BaseApiController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -41,7 +42,7 @@ public class AuthController {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private TokenProviderService tokenProviderService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -55,7 +56,7 @@ public class AuthController {
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token = tokenProvider.createToken(authentication);
+        String token = tokenProviderService.createToken(authentication);
         return ResponseEntity.ok(new AuthResponse(token));
     }
 
@@ -78,7 +79,7 @@ public class AuthController {
         UserModel result = userRepository.save(user);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/user/me")
+                .fromCurrentContextPath().path("/login")
                 .buildAndExpand(result.getEmail()).toUri();
 
         return ResponseEntity.created(location)

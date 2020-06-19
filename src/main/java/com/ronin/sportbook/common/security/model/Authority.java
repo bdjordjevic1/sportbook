@@ -13,10 +13,8 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.common.security.authority;
+package com.ronin.sportbook.common.security.model;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.Entity;

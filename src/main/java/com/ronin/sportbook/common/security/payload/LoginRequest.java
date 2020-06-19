@@ -1,4 +1,4 @@
-package com.ronin.sportbook.common.payload;
+package com.ronin.sportbook.common.security.payload;
 
 
 import javax.validation.constraints.Email;

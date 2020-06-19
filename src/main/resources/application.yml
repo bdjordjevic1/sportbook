@@ -69,7 +69,7 @@ media:
 app:
   auth:
     tokenSecret: 926D96C90030DD58429D2751AC1BDBBC
-    tokenExpirationMsec: 864000000
+    tokenExpirationSec: 3600
   oauth2:
     authorizedRedirectUris:
       - http://localhost:4200/oauth2/redirect

@@ -1,6 +1,6 @@
 package com.ronin.sportbook.common.security;
 
-import com.ronin.sportbook.common.security.service.TokenProvider;
+import com.ronin.sportbook.common.security.service.TokenProviderService;
 import com.ronin.sportbook.user.service.CustomUserDetailsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,7 +14,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import javax.annotation.Resource;
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +24,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(TokenAuthenticationFilter.class);
 
     @Autowired
-    private TokenProvider tokenProvider;
+    private TokenProviderService tokenProviderService;
 
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
@@ -37,8 +36,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         try {
             String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                String userId = tokenProvider.getUserIdFromToken(jwt);
+            if (StringUtils.hasText(jwt) && tokenProviderService.validateToken(jwt)) {
+                String userId = tokenProviderService.getUserIdFromToken(jwt);
 
                 UserDetails userDetails = customUserDetailsService.loadUserByUsername(userId);
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -55,9 +54,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     private String getJwtFromRequest(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-            return bearerToken.substring(7, bearerToken.length());
-        }
-        return null;
+        return StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ") ? bearerToken.substring(7) : null;
     }
 }
