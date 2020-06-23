@@ -15,15 +15,17 @@
 
 package com.ronin.sportbook.common.controller;
 
+import lombok.Getter;
 import org.dozer.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
+@Getter
 public class BaseApiController {
 
     @Autowired
     private Mapper mapper;
 
-    public Mapper getMapper() {
-        return mapper;
-    }
+    @Autowired
+    private MessageSource messageSource;
 }

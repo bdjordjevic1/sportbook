@@ -2,16 +2,17 @@ package com.ronin.sportbook.common.security.controller;
 
 
 import com.ronin.sportbook.common.controller.BaseApiController;
+import com.ronin.sportbook.common.security.exception.BadRequestException;
+import com.ronin.sportbook.common.security.model.AuthProvider;
 import com.ronin.sportbook.common.security.payload.ApiResponse;
 import com.ronin.sportbook.common.security.payload.AuthResponse;
 import com.ronin.sportbook.common.security.payload.LoginRequest;
 import com.ronin.sportbook.common.security.payload.SignUpRequest;
-import com.ronin.sportbook.common.security.exception.BadRequestException;
-import com.ronin.sportbook.common.security.model.AuthProvider;
 import com.ronin.sportbook.common.security.service.TokenProviderService;
 import com.ronin.sportbook.repository.UserRepository;
 import com.ronin.sportbook.user.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,10 +22,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.net.URI;
+import java.util.Locale;
 
 import javax.validation.Valid;
 
@@ -61,9 +62,10 @@ public class AuthController extends BaseApiController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public ApiResponse registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new BadRequestException("Email address already in use.");
+            throw new BadRequestException(getMessageSource().getMessage("email.alreadyExists", null, Locale.ENGLISH));
         }
 
         // Creating user's account
@@ -78,12 +80,7 @@ public class AuthController extends BaseApiController {
 
         UserModel result = userRepository.save(user);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/login")
-                .buildAndExpand(result.getEmail()).toUri();
-
-        return ResponseEntity.created(location)
-                             .body(new ApiResponse(true, "User registered successfully!"));
+        return new ApiResponse(true, "User registered successfully!");
     }
 
 }

@@ -17,9 +17,15 @@ package com.ronin.sportbook.user.service;
 
 
 import com.ronin.sportbook.user.data.UserModelList;
+import com.ronin.sportbook.user.dto.UserDTO;
+import com.ronin.sportbook.user.model.UserModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
 
     UserModelList findAll();
+
+    UserModel getCurrentUser();
+
+    void updateUser(UserDTO user);
 }

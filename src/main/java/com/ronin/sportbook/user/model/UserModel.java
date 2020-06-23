@@ -46,6 +46,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "users")
@@ -59,6 +61,8 @@ public class UserModel implements UserDetails, Serializable {
     @SequenceGenerator(name = "user_generator", sequenceName = "user_seq")
     private Long id;
 
+    @NotEmpty
+    @Email
     private String email;
 
     @JsonIgnore

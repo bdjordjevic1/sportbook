@@ -17,6 +17,8 @@ package com.ronin.sportbook.repository;
 
 import com.ronin.sportbook.user.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -27,4 +29,8 @@ public interface UserRepository extends JpaRepository<UserModel, String> {
     Optional<UserModel> findByEmail(String email);
 
     Boolean existsByEmail(String email);
+
+    @Modifying
+    @Query("update UserModel u set u.firstName = ?1, u.lastName = ?2 where u.id = ?3")
+    void updateUser(String firstName, String lastName, Long userId);
 }

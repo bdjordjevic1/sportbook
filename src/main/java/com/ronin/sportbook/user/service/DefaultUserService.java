@@ -16,14 +16,18 @@
 package com.ronin.sportbook.user.service;
 
 import com.ronin.sportbook.user.data.UserModelList;
+import com.ronin.sportbook.user.dto.UserDTO;
 import com.ronin.sportbook.user.model.UserModel;
 import com.ronin.sportbook.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -47,5 +51,17 @@ public class DefaultUserService implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findById(username).orElseThrow(
             () -> new UsernameNotFoundException(StringUtils.join("User with username :", username)));
+    }
+
+    @Override
+    public UserModel getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return  (UserModel) authentication.getPrincipal();
+    }
+
+    @Override
+    @Transactional
+    public void updateUser(UserDTO user) {
+        userRepository.updateUser(user.getFirstName(), user.getLastName(), user.getId());
     }
 }

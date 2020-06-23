@@ -1,51 +1,25 @@
 package com.ronin.sportbook.common.security.payload;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
+@Getter
+@Setter
 public class SignUpRequest {
-    @NotBlank
+
+    @NotBlank(message = "{firstName.notBlank}")
     private String firstName;
 
-    @NotBlank
+    @NotBlank(message = "{lastName.notBlank}")
     private String lastName;
 
-    @NotBlank
-    @Email
+    @NotBlank(message = "{email.notBlank}")
+    @Email(message = "{email.invalid.format}")
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "{password.notBlank}")
     private String password;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
