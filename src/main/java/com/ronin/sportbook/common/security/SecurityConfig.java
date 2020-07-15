@@ -32,6 +32,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -115,7 +116,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                          "/**/*.css",
                          "/**/*.js")
             .permitAll()
-            .antMatchers("/api/auth/**")
+            .antMatchers("/api/auth/**", "/api/users/reset-password", "/api/users/change-password", "/api/users/validate-token", "/api/medias/**")
             .permitAll()
             .anyRequest()
             .authenticated();

@@ -15,8 +15,10 @@
 
 package com.ronin.sportbook.user.service;
 
+import com.ronin.sportbook.repository.PasswordResetTokenRepository;
 import com.ronin.sportbook.user.data.UserModelList;
 import com.ronin.sportbook.user.dto.UserDTO;
+import com.ronin.sportbook.user.model.PasswordResetTokenModel;
 import com.ronin.sportbook.user.model.UserModel;
 import com.ronin.sportbook.repository.UserRepository;
 import org.apache.commons.lang3.StringUtils;
@@ -26,10 +28,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -38,6 +46,12 @@ public class DefaultUserService implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public UserModelList findAll() {
@@ -63,5 +77,26 @@ public class DefaultUserService implements UserService {
     @Transactional
     public void updateUser(UserDTO user) {
         userRepository.updateUser(user.getFirstName(), user.getLastName(), user.getId());
+    }
+
+    @Override
+    public PasswordResetTokenModel createPasswordResetTokenForUser(UserModel user) {
+
+        PasswordResetTokenModel tokenModel = new PasswordResetTokenModel(user, UUID.randomUUID().toString(), getTokenExpirationTime());
+        return passwordResetTokenRepository.save(tokenModel);
+    }
+
+    @Override
+    public void changePassword(UserModel user, String password) {
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
+    }
+
+    private Date getTokenExpirationTime() {
+        Date dt = new Date();
+        Calendar c = Calendar.getInstance();
+        c.setTime(dt);
+        c.add(Calendar.DATE, 1);
+        return c.getTime();
     }
 }

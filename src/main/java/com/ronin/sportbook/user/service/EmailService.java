@@ -15,22 +15,12 @@
 
 package com.ronin.sportbook.user.service;
 
-
-import com.ronin.sportbook.user.data.UserModelList;
-import com.ronin.sportbook.user.dto.UserDTO;
-import com.ronin.sportbook.user.model.PasswordResetTokenModel;
 import com.ronin.sportbook.user.model.UserModel;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.mail.SimpleMailMessage;
 
-public interface UserService extends UserDetailsService {
+import java.util.Locale;
 
-    UserModelList findAll();
+public interface EmailService {
 
-    UserModel getCurrentUser();
-
-    void updateUser(UserDTO user);
-
-    PasswordResetTokenModel createPasswordResetTokenForUser(UserModel user);
-
-    void changePassword(UserModel user, String password);
+    SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, UserModel user);
 }

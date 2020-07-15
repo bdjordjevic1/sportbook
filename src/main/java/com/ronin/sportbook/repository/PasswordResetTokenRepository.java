@@ -13,24 +13,16 @@
  * (c) 2020 by NETCONOMY Software & Consulting GmbH
  *********************************************************************/
 
-package com.ronin.sportbook.user.service;
+package com.ronin.sportbook.repository;
 
-
-import com.ronin.sportbook.user.data.UserModelList;
-import com.ronin.sportbook.user.dto.UserDTO;
 import com.ronin.sportbook.user.model.PasswordResetTokenModel;
-import com.ronin.sportbook.user.model.UserModel;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface UserService extends UserDetailsService {
+import java.util.Optional;
 
-    UserModelList findAll();
+@Repository
+public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetTokenModel, Long> {
 
-    UserModel getCurrentUser();
-
-    void updateUser(UserDTO user);
-
-    PasswordResetTokenModel createPasswordResetTokenForUser(UserModel user);
-
-    void changePassword(UserModel user, String password);
+    Optional<PasswordResetTokenModel> findByToken(String token);
 }

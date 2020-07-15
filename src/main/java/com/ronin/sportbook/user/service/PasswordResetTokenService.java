@@ -15,22 +15,17 @@
 
 package com.ronin.sportbook.user.service;
 
-
-import com.ronin.sportbook.user.data.UserModelList;
-import com.ronin.sportbook.user.dto.UserDTO;
+import com.ronin.sportbook.common.exception.ModelNotFoundException;
+import com.ronin.sportbook.user.exception.PasswordResetTokenExpiredException;
 import com.ronin.sportbook.user.model.PasswordResetTokenModel;
-import com.ronin.sportbook.user.model.UserModel;
-import org.springframework.security.core.userdetails.UserDetailsService;
 
-public interface UserService extends UserDetailsService {
+public interface PasswordResetTokenService {
 
-    UserModelList findAll();
+    PasswordResetTokenModel findByToken(String token) throws ModelNotFoundException;
 
-    UserModel getCurrentUser();
+    boolean validate(String token) throws PasswordResetTokenExpiredException, ModelNotFoundException;
 
-    void updateUser(UserDTO user);
+    boolean validate(PasswordResetTokenModel token) throws PasswordResetTokenExpiredException;
 
-    PasswordResetTokenModel createPasswordResetTokenForUser(UserModel user);
-
-    void changePassword(UserModel user, String password);
+    void removeUsedToken(PasswordResetTokenModel token);
 }

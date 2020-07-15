@@ -79,6 +79,10 @@ public class UserModel implements UserDetails, Serializable {
     @JoinColumn(name = "media_id", referencedColumnName = "id")
     private MediaModel profilePicture;
 
+    @OneToOne(mappedBy = "user")
+    @JsonIgnore
+    private PasswordResetTokenModel token;
+
     @ManyToMany(fetch = FetchType.LAZY,
                 cascade = {
                     CascadeType.PERSIST,

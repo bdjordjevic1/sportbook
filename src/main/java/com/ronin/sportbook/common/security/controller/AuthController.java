@@ -80,7 +80,7 @@ public class AuthController extends BaseApiController {
 
         UserModel result = userRepository.save(user);
 
-        return new ApiResponse(true, "User registered successfully!");
+        return new ApiResponse(true, "User registered successfully!", "user.registration.success");
     }
 
 }
